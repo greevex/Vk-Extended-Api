@@ -21,6 +21,11 @@ print "---\n";
 
 print "Testing ssl api, requesting same method..\n";
 $vk->switchToSsl();
+$vk->setScope(array(
+    \VEA\lib\wrapper\vkConnection::SCOPE_FRIENDS,
+    \VEA\lib\wrapper\vkConnection::SCOPE_ADV_WALL,
+));
+$vk->authorize();
 $data2 = $vk->api('wall.get', array(
     'owner_id' => 1,    // Pavel Durov | Wall
     'count' => 2        // Limit posts

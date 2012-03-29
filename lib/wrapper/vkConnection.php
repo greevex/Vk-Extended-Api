@@ -55,6 +55,8 @@ implements \VEA\lib\interfaces\connection
     public static $api_url = 'http://api.vk.com/api.php';
     public static $sapi_url = 'https://api.vk.com/method/';
     public static $callback_url = 'http://api.vk.com/blank.html';
+    public static $oauth_auth_url = 'http://oauth.vk.com/authorize';
+    public static $oauth_access_token_url = 'https://oauth.vk.com/access_token';
 
     protected $scope = 0;
 
@@ -133,9 +135,12 @@ implements \VEA\lib\interfaces\connection
             'redirect_uri' => self::$callback_url
         );
         try {
-            $response = $this->request->makeRequest($this->sapi_url, $params);
+            $response = $this->request->makeRequest(self::$oauth_auth_url, $params);
+            print $response;
             $code = trim(striptags($response));
+            print "code:[$code];";
             $access_token = $this->callAccessTokenByCode($code);
+            print "access_token:[$access_token];";
             $this->setAccessToken($access_token);
             $this->authorized = true;
             return true;
@@ -232,7 +237,7 @@ implements \VEA\lib\interfaces\connection
         );
 
         $response = json_decode(
-                $this->request->makeRequest($this->oauth_access_token_url, $params),
+                $this->request->makeRequest(self::$oauth_access_token_url, $params),
                 true);
         if(!$this->validate($response)) {
             return false;
