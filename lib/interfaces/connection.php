@@ -14,7 +14,7 @@ interface connection
      *
      * @param string $method - api method name
      * @param array $params - api method params
-     * @param array $api_type - http | ssl
+     * @param array $api_type - api type constant
      *
      * @return array - api response
      */
@@ -40,20 +40,50 @@ interface connection
      */
     public function api_ssl($method, $params = array());
 
+
     /**
-     * Authorize using OAuth2
-     * Returns true on success or false on failure
+     * Set login and password
+     * Required to use «client» authorization type
      *
-     * @return boolean
+     * @param string $login - login or e-mail
+     * @param string $password - password
      */
-    public function authorize();
+    public function setLoginAndPassword($login, $password);
+
+    /**
+     * Authorization
+     *
+     * @example
+     * server - server-side old authorization
+     * server2 - server-side new OAuth2 authorization
+     * client - authorize using login and password
+     *
+     * @param string $type - server|server2|client
+     * @return boolean - true on success or false on failure
+     */
+    public function authorize($type = 'server');
+
+    /**
+     * Server-side new authorization using OAuth2
+     *
+     * @return boolean - true on success or false on failure
+     */
+    public function authorize_server();
+
+    /**
+     * Server-side client authorization using login and password
+     * specified on object construct
+     *
+     * @return boolean - true on success or false on failure
+     */
+    public function authorize_client();
 
     /**
      * Validate result for an errors
      *
      * @param Array $result
      */
-    public function validate(Array $result);
+    public function validate($result);
 
     /**
      * Switch to api requests throw HTTP protocol
@@ -82,13 +112,6 @@ interface connection
     public function setAccessToken($access_token);
 
     /**
-     * Get auth url
-     *
-     * @param Array scope
-     */
-    public function getAuthUrl(Array $scope = '');
-
-    /**
      * Get an object of last error
      *
      * @return \Exception
@@ -108,5 +131,13 @@ interface connection
      * @return string
      */
     public function getAppSecret();
+
+    /**
+     * Set application access level
+     * Taken array of access const values
+     *
+     * @param Array $scope
+     */
+    public function setScope(Array $scope);
 
 }
