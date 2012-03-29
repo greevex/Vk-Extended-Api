@@ -52,9 +52,9 @@ implements \VEA\lib\interfaces\connection
     protected $app_id;
     protected $app_secret;
 
-    protected $api_url = 'http://api.vk.com/api.php';
-    protected $sapi_url = 'https://api.vk.com/method/';
-    protected $callback_url = 'http://api.vk.com/blank.html';
+    public static $api_url = 'http://api.vk.com/api.php';
+    public static $sapi_url = 'https://api.vk.com/method/';
+    public static $callback_url = 'http://api.vk.com/blank.html';
 
     protected $scope = 0;
 
@@ -97,7 +97,7 @@ implements \VEA\lib\interfaces\connection
         $params['sig'] = $this->makeSignature($params);
 
         $response = json_decode(
-                $this->request->makeRequest($this->api_url, $params),
+                $this->request->makeRequest(self::$api_url, $params),
                 true);
         if(!$this->validate($response)) {
             return false;
@@ -109,7 +109,7 @@ implements \VEA\lib\interfaces\connection
     {
         $params['access_token'] = $this->getAccessToken();
         $response = json_decode(
-                $this->request->makeRequest("$this->sapi_url$method.$this->api_format", $params),
+                $this->request->makeRequest(self::$sapi_url . "$method.$this->api_format", $params),
                 true);
         if(!$this->validate($response)) {
             return false;
@@ -130,7 +130,7 @@ implements \VEA\lib\interfaces\connection
             'response_type' => 'code',
             'client_id' => $this->app_id,
             'scope' => $this->scope,
-            'redirect_uri' => $this->callback_url
+            'redirect_uri' => self::$callback_url
         );
         try {
             $response = $this->request->makeRequest($this->sapi_url, $params);
