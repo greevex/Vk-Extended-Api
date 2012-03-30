@@ -59,14 +59,14 @@ interface connection
      * client - authorize using login and password
      *
      * @param string $type - server|server2|client
-     * @return boolean - true on success or false on failure
+     * @return boolean Result
      */
     public function authorize($type = 'server');
 
     /**
      * Server-side new authorization using OAuth2
      *
-     * @return boolean - true on success or false on failure
+     * @return boolean Result
      */
     public function authorize_server();
 
@@ -74,16 +74,18 @@ interface connection
      * Server-side client authorization using login and password
      * specified on object construct
      *
-     * @return boolean - true on success or false on failure
+     * @return boolean Result
      */
     public function authorize_client();
 
     /**
      * Validate result for an errors
+     * If string given, it would br json encoded
      *
-     * @param Array $result
+     * @param string|Array $result
+     * @return boolean Result
      */
-    public function validate($result);
+    public function validate(&$result);
 
     /**
      * Switch to api requests throw HTTP protocol
@@ -140,4 +142,12 @@ interface connection
      */
     public function setScope(Array $scope);
 
+    /**
+     * Load configuration data
+     * Returns true on success or false on failure
+     *
+     * @param array $data
+     * @return boolean
+     */
+    public function loadConfig($data);
 }

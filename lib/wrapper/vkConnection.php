@@ -52,11 +52,11 @@ implements \VEA\lib\interfaces\connection
     protected $app_id;
     protected $app_secret;
 
-    public static $api_url = 'http://api.vk.com/api.php';
-    public static $sapi_url = 'https://api.vk.com/method/';
-    public static $callback_url = 'http://api.vk.com/blank.html';
-    public static $oauth_auth_url = 'http://oauth.vk.com/authorize';
-    public static $oauth_access_token_url = 'https://oauth.vk.com/access_token';
+    protected $api_url = 'http://api.vk.com/api.php';
+    protected $sapi_url = 'https://api.vk.com/method/';
+    protected $callback_url = 'http://api.vk.com/blank.html';
+    protected $oauth_auth_url = 'http://oauth.vk.com/authorize';
+    protected $oauth_access_token_url = 'https://oauth.vk.com/access_token';
 
     protected $scope = 0;
 
@@ -98,9 +98,7 @@ implements \VEA\lib\interfaces\connection
 
         $params['sig'] = $this->makeSignature($params);
 
-        $response = json_decode(
-                $this->request->makeRequest(self::$api_url, $params),
-                true);
+        $response = $this->request->makeRequest($this->api_url, $params);
         if(!$this->validate($response)) {
             return false;
         }
@@ -110,9 +108,9 @@ implements \VEA\lib\interfaces\connection
     public function api_ssl($method, $params = Array())
     {
         $params['access_token'] = $this->getAccessToken();
-        $response = json_decode(
-                $this->request->makeRequest(self::$sapi_url . "$method.$this->api_format", $params),
-                true);
+        $response = $this->request
+                ->makeRequest($this->sapi_url . "$method.$this->api_format", $params);
+        var_dump($response);
         if(!$this->validate($response)) {
             return false;
         }
@@ -127,32 +125,33 @@ implements \VEA\lib\interfaces\connection
 
     public function authorize_server()
     {
-        $params = array(
-            'display' => 'page',
-            'response_type' => 'code',
-            'client_id' => $this->app_id,
-            'scope' => $this->scope,
-            'redirect_uri' => self::$callback_url
-        );
-        try {
-            $response = $this->request->makeRequest(self::$oauth_auth_url, $params);
-            print $response;
-            $code = trim(striptags($response));
-            print "code:[$code];";
-            $access_token = $this->callAccessTokenByCode($code);
-            print "access_token:[$access_token];";
-            $this->setAccessToken($access_token);
-            $this->authorized = true;
-            return true;
-        } catch(\Exception $e) {
-            return false;
-        }
+        $access_token = $this->callAccessTokenByClientCredentials();
+        $this->setAccessToken($access_token);
+        $this->authorized = true;
+        return true;
     }
 
     public function authorize_client()
     {
         $this->authorized = false;
-        throw new \Exception("Not working now", -1);
+        throw new \Exception("Not implemented now", -1);
+        return false;
+
+        /**
+         * @todo :)
+         */
+        $params = array(
+            'client_id' => $this->getAppId(),
+            'scope' => $this->getScope(),
+            'redirect_uri' => $this->redirect_url,
+            'response_type' => 'code'
+        );
+        $response = $this->request->makeRequest($this->oauth_auth_url, $params);
+        $code = strip_tags($response);
+        $access_token = $this->callAccessTokenByCode($code);
+        $this->setAccessToken($access_token);
+        $this->authorized = true;
+        return true;
     }
 
     public function getAccessToken()
@@ -190,13 +189,15 @@ implements \VEA\lib\interfaces\connection
         $this->api_type = self::ATYPE_SSL;
     }
 
-    public function validate($result)
+    public function validate(&$result)
     {
+        if(!is_array($result)) {
+            $result = json_decode($result, true);
+        }
         if(!is_array($result)) {
             return false;
         }
         if(isset($result['error'])) {
-            print_r($result);
             $e = new \Exception($result['error']['error_code'], $result['error']['error_code']);
             $this->last_error = $e;
             return false;
@@ -236,18 +237,51 @@ implements \VEA\lib\interfaces\connection
             'code' => $code,
         );
 
-        $response = json_decode(
-                $this->request->makeRequest(self::$oauth_access_token_url, $params),
-                true);
+        $response = $this->request->makeRequest($this->oauth_access_token_url, $params);
         if(!$this->validate($response)) {
             return false;
         }
-        if (isset($response['access_token'])) {
-            return $response['access_token'];
-        } else {
-            $e = new \Exception('Unexpected response', -1);
-            $this->last_error = $e;
+        if (!isset($response['access_token'])) {
+            return $this->forceUnexpected();
+        }
+        return $response['access_token'];
+    }
+
+    private function forceUnexpected()
+    {
+        $e = new \Exception('Unexpected response', -1);
+        $this->last_error = $e;
+        return false;
+    }
+
+    private function callAccessTokenByClientCredentials()
+    {
+        $params = array(
+            'client_id' => $this->getAppId(),
+            'client_secret' => $this->getAppSecret(),
+            'grant_type' => 'client_credentials'
+        );
+        $response = $this->request->makeRequest($this->oauth_access_token_url, $params);
+        if(!$this->validate($response)) {
             return false;
         }
+        if(!isset($response['access_token'])) {
+            return $this->forceUnexpected();
+        }
+        return $response['access_token'];
+    }
+
+    public function loadConfig($data)
+    {
+        if(!is_array($data)) {
+            return false;
+        }
+        foreach($data as $key => $value)
+        {
+            if(isset($this->{$key})) {
+                $this->{$key} = $value;
+            }
+        }
+        return true;
     }
 }
