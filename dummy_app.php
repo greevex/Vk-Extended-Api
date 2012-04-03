@@ -10,5 +10,6 @@ $data = $vk->newsfeed->search(array(
     'q' => 'вечер',
     'count' => 20,
     'extended' => 1,
-    'start_time' => $last_time
 ));
+
+print_r($data);
