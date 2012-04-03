@@ -1,14 +1,14 @@
 <?php
 
-namespace VEA\lib\net;
+namespace net\driver;
 
 /**
- *
+ * Curl driver for HTTP Request class
  *
  * @author GreeveX <greevex@gmail.com>
  */
-class requestCurl
-implements \VEA\lib\interfaces\request
+class curl
+implements \net\iRequest
 {
     private $curl;
 
@@ -16,7 +16,7 @@ implements \VEA\lib\interfaces\request
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => 1,
         CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_USERAGENT => 'Vk-Extended-Api v1.1',
+        CURLOPT_USERAGENT => 'net\request v0.2',
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_TIMEOUT => 60,
     );
@@ -32,17 +32,26 @@ implements \VEA\lib\interfaces\request
 
         switch($method) {
             case 'GET':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'GET');
                 $url .= strpos($url, '?') === false ? "?$params" : "&$params";
                 break;
+            case 'PUT':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+                curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
+                break;
+            case 'DELETE':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
+                break;
             case 'POST':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'POST');
                 curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
                 break;
         }
 
         $this->options[CURLOPT_URL] = $url;
-        
+
         curl_setopt_array($this->curl, $this->options);
-        curl_setopt($this->curl, CURLOPT_POST, $method == 'POST');
 
         $result = curl_exec($this->curl);
 

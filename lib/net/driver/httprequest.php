@@ -1,18 +1,17 @@
 <?php
 
-namespace VEA\lib\net;
+namespace net\driver;
 
 /**
- *
+ * HttpRequest driver for HTTP Request class
  *
  * @author GreeveX <greevex@gmail.com>
  */
-class requestHttprequest
-implements \VEA\lib\interfaces\request
+class httprequest
+implements \net\iRequest
 {
     /**
      *
-     * @see \HttpRequest
      * @var \HttpRequest
      */
     private $httprequest;
@@ -20,7 +19,7 @@ implements \VEA\lib\interfaces\request
     private $options = array(
         'redirect' => 1,
         'verifypeer' => false,
-        'useragent' => 'Vk-Extended-Api v1.1',
+        'useragent' => 'net\request v0.2',
         'connecttimeout' => 10,
         'timeout' => 60,
     );
@@ -36,17 +35,26 @@ implements \VEA\lib\interfaces\request
 
         switch($method) {
             case 'GET':
+                $this->httprequest->setMethod(\HttpRequest::HTTP_METH_GET);
                 $url .= strpos($url, '?') === false ? "?$params" : "&$params";
                 break;
+            case 'PUT':
+                $this->httprequest->setMethod(\HttpRequest::HTTP_METH_PUT);
+                $this->httprequest->setPutData($params);
+                break;
+            case 'DELETE':
+                $this->httprequest->setMethod(\HttpRequest::HTTP_METH_DELETE);
+                $this->httprequest->setPostFields($params);
+                break;
             case 'POST':
+                $this->httprequest->setMethod(\HttpRequest::HTTP_METH_POST);
                 $this->httprequest->setPostFields($params);
                 break;
         }
 
         $this->httprequest->setUrl($url);
-        
+
         $this->httprequest->setOptions($this->options);
-        $this->httprequest->setMethod($method);
 
         return $this->httprequest->send();
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace VEA\lib\wrapper;
+namespace VEA\lib;
 
 /**
  * vkConnection
@@ -8,7 +8,7 @@ namespace VEA\lib\wrapper;
  * @author GreeveX <greevex@gmail.com>
  */
 class vkConnection
-implements \VEA\lib\interfaces\connection
+implements iConnection
 {
 
     const
@@ -65,12 +65,19 @@ implements \VEA\lib\interfaces\connection
 
     protected $last_error;
 
+    protected $verbose = true;
+
+    public function setVerbose($state)
+    {
+        $this->verbose = (bool)$state;
+    }
+
     public function __construct($app_id, $app_secret, $api_format = 'json')
     {
         $this->app_id = $app_id;
         $this->app_secret = $app_secret;
         $this->api_format = $api_format;
-        $this->request = new \VEA\lib\net\request();
+        $this->request = new \net\request();
     }
 
     public function api($method, $params = Array(), $api_type = null)
@@ -102,6 +109,9 @@ implements \VEA\lib\interfaces\connection
         if(!$this->validate($response)) {
             return false;
         }
+        if($this->verbose) {
+            $response = $response['response'];
+        }
         return $response;
     }
 
@@ -113,6 +123,9 @@ implements \VEA\lib\interfaces\connection
         var_dump($response);
         if(!$this->validate($response)) {
             return false;
+        }
+        if($this->verbose) {
+            $response = $response['response'];
         }
         return $response;
     }
@@ -198,7 +211,7 @@ implements \VEA\lib\interfaces\connection
             return false;
         }
         if(isset($result['error'])) {
-            $e = new \Exception($result['error']['error_code'], $result['error']['error_code']);
+            $e = new \Exception($result['error']['error_msg'], $result['error']['error_code']);
             $this->last_error = $e;
             return false;
         }

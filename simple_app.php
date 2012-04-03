@@ -1,13 +1,12 @@
 <?php
 require __DIR__ . '/vk_extended_api.inc.php';
 
-$vk = new VEA\lib\wrapper\vk(2822067, 'BBGlfgwaXu2Na104tdv4');
+$vk = new VEA\lib\vk(2822067, 'BBGlfgwaXu2Na104tdv4');
 
-$params = array(
-    'owner_id' => 1,    // Pavel Durov | Wall
-    'count' => 2        // Limit posts
-);
+/**
+ * PHP5.4 code seems like this:
+ * $data1 = $vk->wall->get(['owner_id'=>1,'count'=>2]);
+ */
+$data = $vk->wall->get(array('owner_id' => 1, 'count' => 2));
 
-$data1 = $vk->api('wall.get', $params);
-
-print_r($data1);
+print_r($data);

@@ -1,27 +1,27 @@
 <?php
 
-namespace VEA\lib\net;
+namespace net;
 
 /**
- * Request class
+ * HTTP Request class
  *
  * @author GreeveX <greevex@gmail.com>
  */
 class request
-implements \VEA\lib\interfaces\request
+implements iRequest
 {
     protected $instance;
 
     /**
-     * Will load driver on constructing
+     * Loading driver
      *
      * @param string $driver - curl | httprequest
      */
     public function __construct($driver = 'curl')
     {
-        $classname = "request" . ucfirst($driver);
-        require_once __DIR__ . DIRECTORY_SEPARATOR . "$classname.php";
-        $classname = __NAMESPACE__ . "\\$classname";
+        require_once __DIR__ .
+                DIRECTORY_SEPARATOR . "driver" . DIRECTORY_SEPARATOR . "{$driver}.php";
+        $classname = __NAMESPACE__ . "\\driver\\{$driver}";
         $this->instance = new $classname();
     }
 
@@ -32,11 +32,11 @@ implements \VEA\lib\interfaces\request
 
     public function setConnectTimeout($seconds)
     {
-        return $this->instance->setConnectTimeout($seconds);
+        $this->instance->setConnectTimeout($seconds);
     }
 
     public function setTimeout($seconds)
     {
-        return $this->instance->setTimeout($seconds);
+        $this->instance->setTimeout($seconds);
     }
 }

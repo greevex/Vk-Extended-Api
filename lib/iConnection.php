@@ -1,12 +1,12 @@
 <?php
-namespace VEA\lib\interfaces;
+namespace VEA\lib;
 
 /**
  * Connection interface
  *
  * @author GreeveX <greevex@gmail.com>
  */
-interface connection
+interface iConnection
 {
 
     /**
@@ -29,6 +29,12 @@ interface connection
      * @return array - api response
      */
     public function api_http($method, $params = array());
+
+    /**
+     * Change verbose state
+     * If verbose is true, api call will returns value of ['response'] key in data
+     */
+    public function setVerbose($state);
 
     /**
      * Call api method with params over ssl protocol

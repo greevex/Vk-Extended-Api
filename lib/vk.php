@@ -1,6 +1,6 @@
 <?php
 
-namespace VEA\lib\wrapper;
+namespace VEA\lib;
 
 /**
  * vkWrapper
@@ -24,6 +24,9 @@ extends vkConnection
 
     public function __call($method, $params)
     {
+        if(isset($params[0])) {
+            $params = $params[0];
+        }
         $method = "$this->current_api_object.$method";
         return $this->api($method, $params);
     }
