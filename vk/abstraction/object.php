@@ -29,12 +29,7 @@ abstract class object
     {
         return $this->owner;
     }
-
-    public function getStdStringId()
-    {
-        return "{$this->owner_id}_{$this->id}";
-    }
-
+    
     public function __toString()
     {
         return $this->id;

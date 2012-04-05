@@ -10,7 +10,7 @@ extends \vk\abstraction\object
     private $duration = false;
     private $performer = false;
 
-    public function audio($data)
+    public function __construct($data)
     {
         $this->id = $data['aid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

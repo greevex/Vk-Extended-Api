@@ -6,7 +6,7 @@ class graffiti
 extends \vk\abstraction\image
 {
 
-    public function graffiti($data)
+    public function __construct($data)
     {
         $this->id = $data['gid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

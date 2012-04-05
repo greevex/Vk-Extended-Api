@@ -11,7 +11,7 @@ extends \vk\abstraction\object
     private $description = false;
     private $image_src = false;
 
-    public function link($data)
+    public function __construct($data)
     {
         $this->url = $data['url'];
         $this->title = $data['title'];

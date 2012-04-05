@@ -10,7 +10,7 @@ extends \vk\abstraction\object
     private $src = false;
     private $src_big = false;
 
-    public function app($data)
+    public function __construct($data)
     {
         $this->id = $data['app_id'];
         $this->name = $data['app_name'];

@@ -9,7 +9,7 @@ extends \vk\abstraction\object
     private $title = false;
     private $duration = false;
 
-    public function video($data)
+    public function __construct($data)
     {
         $this->id = $data['vid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

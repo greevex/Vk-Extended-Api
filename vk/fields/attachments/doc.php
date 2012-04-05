@@ -10,7 +10,7 @@ extends \vk\abstraction\object
     private $size = false;
     private $ext = false;
 
-    public function doc($data)
+    public function __construct($data)
     {
         $this->id = $data['did'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

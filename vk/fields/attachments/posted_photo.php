@@ -6,7 +6,7 @@ class posted_photo
 extends \vk\abstraction\image
 {
 
-    public function posted_photo($data)
+    public function __construct($data)
     {
         $this->id = $data['pid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

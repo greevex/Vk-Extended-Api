@@ -9,7 +9,7 @@ extends \vk\abstraction\object
     private $title = false;
     private $ncom = false;
 
-    public function note($data)
+    public function __construct($data)
     {
         $this->id = $data['nid'];
         $this->owner_id = new \vk\objects\owner($data['owner_id']);

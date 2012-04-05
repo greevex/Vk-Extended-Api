@@ -3,39 +3,26 @@
 namespace vk\fields;
 
 class attachments
+extends \ArrayObject
 {
 
-    private $objects = array();
-
-    private $att_type = array(
-        'photo' => 'photo',
-        'posted_photo' => 'posted_photo',
-        'video' => 'video',
-        'audio' => 'audio',
-        'doc' => 'doc',
-        'graffiti' => 'graffiti',
-        'link' => 'link',
-        'note' => 'note',
-        'app' => 'app',
-        'poll' => 'poll',
-        'page' => 'page'
-    );
-
-    public function attachments($attachments)
+    public function __construct($attachments)
     {
+        $objects = array();
         foreach($attachments as $attachment) {
+            if(!is_array($attachment)) {
+                continue;
+            }
             if(!isset($this->att_type[$attachment['type']])) {
                 continue;
             }
-            $type = $this->att_type[$attachment['type']];
-            $attachment_class = "\\vk\\fields\\attachments\\{$type}";
-            $this->objects[] = new $attachment_class($attachment[$attachment['type']]);
+            $attachment_class = "\\vk\\fields\\attachments\\{$attachment['type']}";
+            try {
+                $objects[] = new $attachment_class($attachment[$attachment['type']]);
+            } catch(Exception $e) {
+                throw new \Exception("Attachment type {$attachment['type']} not implemented!", -1);
+            }
         }
+        parent::__construct($objects);
     }
-
-    public function getObjects()
-    {
-        return $this->objects;
-    }
-
 }

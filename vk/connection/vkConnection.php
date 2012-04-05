@@ -74,10 +74,12 @@ implements iConnection
         $this->verbose = $state;
     }
 
-    public function __construct($app_id, $app_secret, $api_format = 'json')
+    public function __construct($app_id = null, $app_secret = null, $api_format = 'json')
     {
-        $this->app_id = $app_id;
-        $this->app_secret = $app_secret;
+        if($app_id != null && $app_secret != null) {
+            $this->app_id = $app_id;
+            $this->app_secret = $app_secret;
+        }
         $this->api_format = $api_format;
         $this->request = new \net\request();
     }
