@@ -41,13 +41,26 @@ extends \vk\abstraction\object
                 $this->id = $data;
             }
         } else {
-            $this->parse($data);
+            if(!isset($data['owner_id'], $data['from_id'])) {
+                if(isset($data['uid'])) {
+                    $this->parseUser($data);
+                } elseif(isset($data['gid'])) {
+                    $this->parseGroup($data);
+                }
+            } else {
+                $this->parse($data);
+            }
         }
     }
 
     private function parse($data)
     {
-        if(mb_substr($data['owner_id'], 0 ,1) == '-') {
+        if(isset($data['owner_id'])) {
+            $owner = $data['owner_id'];
+        } elseif(isset($data['from_id'])) {
+            $owner = $data['from_id'];
+        }
+        if(mb_substr($owner, 0 ,1) == '-') {
             if(isset($data['group'])) {
                 return $this->parseGroup($data['group']);
             }
@@ -63,7 +76,9 @@ extends \vk\abstraction\object
     {
         $this->id = $data['uid'];
         $this->name = "{$data['first_name']} {$data['last_name']}";
-        $this->screen_name = $data['screen_name'];
+        if(isset($data['screen_name'])) {
+            $this->screen_name = $data['screen_name'];
+        }
         $this->photo = $data['photo'];
         $this->photo_med = $data['photo_medium_rec'];
     }

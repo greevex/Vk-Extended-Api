@@ -6,7 +6,10 @@ class wall
 extends \vk\abstraction\api
 {
 
-    protected static $classname = 'wall';
+    public static function _init()
+    {
+        parent::$classname = 'wall';
+    }
 
     /**
      * Возвращает список записей со стены пользователя.
@@ -26,9 +29,8 @@ extends \vk\abstraction\api
             'filter',
             'extended'
         );
-        $params = self::combineArgs($params, func_get_args());
-        $data = self::api()->api(self::$classname . "." . __FUNCTION__, $params);
-        return $data;
+        $data = self::_exec($params, func_get_args(), __FUNCTION__);
+        return new \vk\objects\posts($data, parent::$classname);
     }
 
     public static function getComments()
@@ -43,4 +45,4 @@ extends \vk\abstraction\api
     {
     }
 
-}
+} wall::_init();

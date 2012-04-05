@@ -36,7 +36,7 @@ extends \vk\abstraction\api
             'extended'
         );
         $data = self::_exec($params, func_get_args(), __FUNCTION__);
-        return new \vk\objects\posts($data);
+        return new \vk\objects\posts($data, parent::$classname);
     }
 
     public static function getComments()
