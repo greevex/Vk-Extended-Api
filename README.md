@@ -28,7 +28,9 @@ ___
 ***[ in progress ]*** - Working on extension now
 
 *[ comming soon ]* - Extension planned
+
 ___
+
 * OOP style API ***[ OK ]***
 * Attachments as objects **[ OK ]**
 * VK Objects abstraction **[ OK ]**
