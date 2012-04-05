@@ -1,14 +1,14 @@
 <?php
 
-namespace VEA\lib;
+namespace vk;
 
 /**
  * vkWrapper
  *
  * @author GreeveX
  */
-class vk
-extends vkConnection
+class wrapper
+extends connection\vkConnection
 {
     private $current_api_object = '';
     public function __construct($app_id, $app_secret, $api_format = 'json')
@@ -19,6 +19,9 @@ extends vkConnection
     public function __get($parameter)
     {
         $this->current_api_object = $parameter;
+        if(!empty($parameter)) {
+            $this->current_api_object .= ".";
+        }
         return $this;
     }
 
@@ -27,7 +30,8 @@ extends vkConnection
         if(isset($params[0])) {
             $params = $params[0];
         }
-        $method = "$this->current_api_object.$method";
+        $method = "$this->current_api_object$method";
+        $this->current_api_object = '';
         return $this->api($method, $params);
     }
 }

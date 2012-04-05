@@ -1,5 +1,6 @@
 <?php
-namespace VEA\lib;
+
+namespace vk\connection;
 
 /**
  * Connection interface

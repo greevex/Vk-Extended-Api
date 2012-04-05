@@ -1,6 +1,8 @@
 <?php
 
-namespace VEA\lib;
+namespace vk\connection;
+
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'net' . DIRECTORY_SEPARATOR . 'Client.php';
 
 /**
  * vkConnection
@@ -69,7 +71,7 @@ implements iConnection
 
     public function setVerbose($state)
     {
-        $this->verbose = (bool)$state;
+        $this->verbose = $state;
     }
 
     public function __construct($app_id, $app_secret, $api_format = 'json')
