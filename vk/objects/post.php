@@ -6,12 +6,12 @@ class post
 extends \vk\abstraction\object
 {
 
-    private $date;
-    private $text;
-    private $comments;
-    private $likes;
-    private $attachments;
-    private $geo;
+    protected $date;
+    protected $text;
+    protected $comments;
+    protected $likes;
+    protected $attachments;
+    protected $geo;
 
     public function getGeo()
     {
@@ -55,12 +55,17 @@ extends \vk\abstraction\object
         }
         $this->text = $data['text'];
 
-        /**
-         * @todo $this->comments = new comments($data['comments']);
-         */
-        $this->comments = (object)$data['comments'];
+        if(isset($data['comments'])) {
+            /**
+            * @todo $this->comments = new comments($data['comments']);
+            */
+            $this->comments = (object)$data['comments'];
+        }
 
-        $this->likes = (object)$data['likes'];
+        if(isset($data['likes'])) {
+            $this->likes = (object)$data['likes'];
+        }
+
         if(isset($data['attachments'])) {
             $this->attachments = new \vk\fields\attachments($data['attachments']);
         } else {

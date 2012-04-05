@@ -47,7 +47,7 @@ extends \ArrayObject
             if(!is_array($post)) {
                 continue;
             }
-            $posts[] = new post($post);
+            $posts[] = new wallpost($post);
         }
         return $posts;
     }

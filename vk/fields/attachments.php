@@ -13,9 +13,6 @@ extends \ArrayObject
             if(!is_array($attachment)) {
                 continue;
             }
-            if(!isset($this->att_type[$attachment['type']])) {
-                continue;
-            }
             $attachment_class = "\\vk\\fields\\attachments\\{$attachment['type']}";
             try {
                 $objects[] = new $attachment_class($attachment[$attachment['type']]);
