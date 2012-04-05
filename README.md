@@ -19,15 +19,14 @@ VK Extended Api for PHP 5.3+
 ___
 ## More information
 
+####Legend:
+
 **[ OK ]** - Extension ready to use
-
 **[ Beta ]** - Extension ready, but unstable
-
 ***[ in progress ]*** - Working on extension now
-
 *[ comming soon ]* - Extension planned
 
-* OOP style API ***[ in progress ]***
+* OOP style API ***[ OK ]***
 * Attachments as objects **[ OK ]**
 * VK Objects abstraction **[ OK ]**
  * users ***[in progress ]***
