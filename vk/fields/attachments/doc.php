@@ -3,7 +3,7 @@
 namespace vk\fields\attachments;
 
 class doc
-extends \vk\abstraction\object
+extends \vk\abstraction\attachment
 {
 
     private $title = false;
@@ -12,6 +12,7 @@ extends \vk\abstraction\object
 
     public function __construct($data)
     {
+        $this->att_type = 'doc';
         $this->id = $data['did'];
         $this->owner = new \vk\objects\owner($data['owner_id']);
         $this->title = $data['title'];

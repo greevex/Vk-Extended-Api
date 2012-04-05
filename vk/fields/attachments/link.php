@@ -3,7 +3,7 @@
 namespace vk\fields\attachments;
 
 class link
-extends \vk\abstraction\object
+extends \vk\abstraction\attachment
 {
 
     private $url = false;
@@ -13,6 +13,7 @@ extends \vk\abstraction\object
 
     public function __construct($data)
     {
+        $this->att_type = 'link';
         $this->url = $data['url'];
         $this->title = $data['title'];
         $this->description = $data['description'];

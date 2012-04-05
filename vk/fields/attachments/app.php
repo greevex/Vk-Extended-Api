@@ -3,7 +3,7 @@
 namespace vk\fields\attachments;
 
 class app
-extends \vk\abstraction\object
+extends \vk\abstraction\attachment
 {
 
     private $name = false;
@@ -12,6 +12,7 @@ extends \vk\abstraction\object
 
     public function __construct($data)
     {
+        $this->att_type = 'app';
         $this->id = $data['app_id'];
         $this->name = $data['app_name'];
         $this->src = $data['src'];

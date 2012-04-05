@@ -3,13 +3,14 @@
 namespace vk\fields\attachments;
 
 class page
-extends \vk\abstraction\object
+extends \vk\abstraction\attachment
 {
 
     private $title = false;
 
     public function __construct($data)
     {
+        $this->att_type = 'page';
         $this->id = $data['pid'];
         $this->owner = new \vk\objects\owner("-{$data['gid']}");
     }

@@ -14,4 +14,9 @@ foreach($posts as $post)
 {
     echo
     $post->getDate("[Y-m-d H:i:s] | "), $post->getOwner()->getName(), " | ", $post->getText(), "\n";
+    foreach($post->getAttachments() as $attachment) {
+        if($attachment->getAttType() == 'poll') {
+            print "Голосование: {$attachment->getQuestion()}\n";
+        }
+    }
 }

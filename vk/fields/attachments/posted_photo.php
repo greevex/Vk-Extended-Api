@@ -3,11 +3,12 @@
 namespace vk\fields\attachments;
 
 class posted_photo
-extends \vk\abstraction\image
+extends \vk\abstraction\attachment
 {
 
     public function __construct($data)
     {
+        $this->att_type = 'posted_photo';
         $this->id = $data['pid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);
 
