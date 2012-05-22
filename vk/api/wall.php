@@ -35,6 +35,17 @@ extends \vk\abstraction\api
 
     public static function getComments()
     {
+        $params = array(
+            'owner_id',
+            'post_id',
+            'sort',
+            'need_likes',
+            'offset',
+            'count',
+            'preview_length'
+        );
+        $data = self::_exec($params, func_get_args(), __FUNCTION__);
+        return new \vk\objects\posts($data, parent::$classname);
     }
 
     public static function getById()

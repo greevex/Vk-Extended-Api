@@ -12,6 +12,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['app_id'])) {
+            return;
+        }
         $this->att_type = 'app';
         $this->id = $data['app_id'];
         $this->name = $data['app_name'];

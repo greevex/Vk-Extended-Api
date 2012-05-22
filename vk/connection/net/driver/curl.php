@@ -14,10 +14,10 @@ implements \net\iRequest
 
     private $options = array(
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_FOLLOWLOCATION => 1,
+        CURLOPT_FOLLOWLOCATION => 10,
         CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_USERAGENT => 'net\request v0.2',
-        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_USERAGENT => 'Lynx/2.8.6rel.4 libwww-FM/2.14 SSL-MM/1.4.1 OpenSSL/0.9.8g',
+        CURLOPT_CONNECTTIMEOUT => 30,
         CURLOPT_TIMEOUT => 60,
     );
 
@@ -25,6 +25,9 @@ implements \net\iRequest
     {
         if($this->curl == null) {
             $this->curl = curl_init();
+            $filename = md5(__CLASS__) . ".txt";
+            curl_setopt($this->curl, CURLOPT_COOKIEFILE, sys_get_temp_dir() . "/$filename");
+            curl_setopt($this ->curl, CURLOPT_COOKIEJAR, sys_get_temp_dir() . "/$filename");
         }
         if ($params) {
             $params = http_build_query($params);
@@ -75,5 +78,10 @@ implements \net\iRequest
     public function setTimeout($seconds)
     {
         $this->options[CURLOPT_TIMEOUT] = intval($seconds);
+    }
+
+    public function getBackend()
+    {
+        return $this->curl;
     }
 }

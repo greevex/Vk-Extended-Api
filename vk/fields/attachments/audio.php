@@ -12,6 +12,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['aid'])) {
+            return;
+        }
         $this->att_type = 'audio';
         $this->id = $data['aid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

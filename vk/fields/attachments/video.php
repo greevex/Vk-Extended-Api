@@ -11,6 +11,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['vid'])) {
+            return;
+        }
         $this->att_type = 'video';
         $this->id = $data['vid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

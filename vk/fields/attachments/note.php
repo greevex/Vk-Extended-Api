@@ -11,6 +11,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['nid'])) {
+            return;
+        }
         $this->att_type = 'note';
         $this->id = $data['nid'];
         $this->owner_id = new \vk\objects\owner($data['owner_id']);

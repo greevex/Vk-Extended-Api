@@ -20,8 +20,8 @@ implements \net\iRequest
         'redirect' => 1,
         'verifypeer' => false,
         'useragent' => 'net\request v0.2',
-        'connecttimeout' => 10,
-        'timeout' => 60,
+        'connecttimeout' => 15,
+        'timeout' => 20,
     );
 
     public function makeRequest($url, $params = array(), $method = 'GET')

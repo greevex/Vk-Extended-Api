@@ -19,7 +19,7 @@ extends \vk\abstraction\object
 
     public function getScreenName()
     {
-        return $this->screen_name;
+        return empty($this->screen_name) ? "id{$this->getId()}" : $this->screen_name;
     }
 
     public function getPhoto()
@@ -55,12 +55,12 @@ extends \vk\abstraction\object
 
     private function parse($data)
     {
-        if(isset($data['owner_id'])) {
-            $owner = $data['owner_id'];
-        } elseif(isset($data['from_id'])) {
+        if(isset($data['from_id'])) {
             $owner = $data['from_id'];
+        } elseif(isset($data['owner_id'])) {
+            $owner = $data['owner_id'];
         }
-        if(mb_substr($owner, 0 ,1) == '-') {
+        if(mb_substr($owner, 0, 1) == '-') {
             if(isset($data['group'])) {
                 return $this->parseGroup($data['group']);
             }

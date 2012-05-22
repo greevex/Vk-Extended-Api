@@ -25,6 +25,11 @@ implements iRequest
         $this->instance = new $classname();
     }
 
+    public function getBackend()
+    {
+        return $this->instance;
+    }
+
     public function makeRequest($url, $params = array(), $method = 'GET')
     {
         return $this->instance->makeRequest($url, $params, $method);

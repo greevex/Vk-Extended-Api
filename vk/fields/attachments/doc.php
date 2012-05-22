@@ -12,6 +12,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['did'])) {
+            return;
+        }
         $this->att_type = 'doc';
         $this->id = $data['did'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

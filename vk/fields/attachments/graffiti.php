@@ -8,6 +8,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['gid'])) {
+            return;
+        }
         $this->att_type = 'graffiti';
         $this->id = $data['gid'];
         $this->owner = new \vk\objects\owner($data['owner_id']);

@@ -16,6 +16,9 @@ extends \ArrayObject
     {
         $owners = array();
 
+        if(!isset($data['profiles']) || !isset($data['groups']) || !isset($data['wall'])) {
+            return array();
+        }
         foreach($data['profiles'] as $profile) {
             $owners[$profile['uid']] = $profile;
         }

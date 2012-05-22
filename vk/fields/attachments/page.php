@@ -10,6 +10,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['pid'])) {
+            return;
+        }
         $this->att_type = 'page';
         $this->id = $data['pid'];
         $this->owner = new \vk\objects\owner("-{$data['gid']}");

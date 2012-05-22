@@ -10,6 +10,9 @@ extends \vk\abstraction\attachment
 
     public function __construct($data)
     {
+        if(!isset($data['poll_id'])) {
+            return;
+        }
         $this->att_type = 'poll';
         $this->id = $data['poll_id'];
         $this->question = $data['question'];
