@@ -34,12 +34,12 @@ ___
 * OOP style API ***[ OK ]***
 * Attachments as objects **[ OK ]**
 * VK Objects abstraction **[ OK ]**
- * users ***[in progress ]***
+ * users ***[ Beta ]***
  * friends ***[ in progress ]***
  * groups ***[ in progress ]***
  * photos *[ comming soon ]*
  * wall ***[ in progress ]***
- * newsfeed ***[ in progress ]***
+ * newsfeed ***[ Beta ]***
  * notifications *[ comming soon ]*
  * audio *[ comming soon ]*
  * video *[ comming soon ]*
